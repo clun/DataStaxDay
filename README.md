@@ -23,16 +23,12 @@ Column 2 => cluster 2
 …
 
 ```
-cluster 1	54.194.199.189
-cluster 2	54.229.51.170
-cluster 3	54.194.155.127
+cluster 1	54.186.100.184
+cluster 2	54.187.35.51
+cluster 3	54.186.17.206
 cluster 4	54.171.130.225
 cluster 5	54.171.188.105
-cluster 6	54.229.185.57
-cluster 7	54.229.187.90
-cluster 8	54.229.186.144
-cluster 9	54.229.193.27
-cluster 10	54.200.169.236
+
 ```
 
 To SSH into the cluster, connect as root using the password provided and the external address of one of the nodes:
