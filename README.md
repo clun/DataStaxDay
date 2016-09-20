@@ -26,8 +26,8 @@ Column 2 => cluster 2
 cluster 1	54.186.100.184
 cluster 2	54.187.35.51
 cluster 3	54.186.17.206
-cluster 4	54.171.130.225
-cluster 5	54.171.188.105
+cluster 4	54.194.218.246
+cluster 5	54.194.217.211
 
 ```
 
