@@ -1,4 +1,4 @@
-Welcome to DataStax Essentials Day!
+Welcome to DataStax Hands-on Day!
 ===================
 ![icon](http://i.imgur.com/FoIOBlt.png)
 
