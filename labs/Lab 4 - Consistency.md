@@ -1,3 +1,5 @@
+**[Back to Agenda](./../README.md)**
+
 # Lab 4 - Consistency
 
 Let's play with consistency!
@@ -83,3 +85,5 @@ This looks much better now doesn't it? LOCAL_QUORUM is the most commonly used co
 For more detailed classed on data modeling, consistency, and Cassandra 101, check out the free classes at the DataStax Academy website: https://academy.datastax.com
 
 When complete with the exercise, go back to OpsCenter and start the node you disabled again.
+
+**[Back to Agenda](./../README.md)**
