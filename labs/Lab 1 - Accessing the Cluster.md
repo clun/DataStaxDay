@@ -3,8 +3,8 @@
 # Lab 1 - Accessing the Cluster
 
 Open a web browser to your OpsCenter node.
-For this cluster, it's running at **http://<'your_cluster_IP_address'>:8888**.   
-See your IP address under following link: [Cluster IP address](./cluster_ip.md).    
+For this cluster, it's running at **http://opscenter_id_address:8888**.   
+Find your IP address here: [Cluster IP address](./cluster_ip.md).    
 
 ![](./img/lab1-1opscenter.png)
 
