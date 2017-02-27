@@ -12,14 +12,14 @@ Mouse over the nodes in your ring.  There should be three, with the names node0,
 
 ![](./img/lab1-3opsdc0vm0ip.png)
 
-Make of note of that node's IP address.  In this case it is 13.88.28.80.  Your IP will be different.  We're now going to SSH into each node and modify a configuration file.  You will have to repeat these steps for nodes node0, node1 and node3.  
+We're now going to SSH into each node and modify a configuration file.  You will have to repeat these steps for nodes: node0, node1 and node3. Please refere to the  **[IP list here](./cluster_ip.md).**
 
 If you are on a Mac, you already have SSH installed in your terminal.  If you are on Windows, you may need to install an SSH client.  A popular SSH client is Putty.  Putty can be downloaded from [http://www.putty.org](http://www.putty.org).
 
 For this cluster, the username is root.  So, in the terminal I can ssh to the node by running the command:
 
 ```
-ssh root@13.88.28.80
+ssh root@54.186.100.184
 ```
 
 You may be prompted to accept the node's key.  If so, type "yes" and hit enter.
@@ -32,38 +32,10 @@ Enter the password provided in the workshop and hit enter.
 
 Great!
 
-Now we're going to use a text editor to change two parameters.  These machines have vi, nano and vim installed.  You can use whichever you prefer.  To edit the file with vi run the command:
-
-```
-vi /etc/default/dse
 ```
 
-In vi you can type "i" to enter insert mode.  When done editing, pressing the escape key will quit insert mode.  To write (save) and quit type ":wq"  vi is a really powerful text editor but has quite a learning curve.  A good getting started guide is [here](https://www.washington.edu/computing/unix/vi.html).  For a more humorous summary, [this](http://www.theregister.co.uk/2003/09/11/bill_joys_greatest_gift/) is a classic.
-
-We want to change three parameter to "1."  Those are:
-
-* GRAPH_ENABLED=1
-* SOLR_ENABLED=1
-* SPARK_ENABLED=1
-
-![](./img/lab1-6vi_v502.png)
-
-We now need to save the file and exit the text editor.  At that point we'll want to restart the DSE service, so that the new parameters are picked up.  We can do that by running the command:
-
-```
-service dse restart
-```
-
-The service will come back with messages saying that Solr, Spark and Graph are now running as shown below.
-
-![](./img/lab1-7service_v502.png)
-
-*Important* -- Repeat these steps to enable Spark and Solr on nodes node1 and node2.
-
-Once complete, you can check all the configs are properly set by running the following command from any node.
-
-```
 dsetool ring
+
 ```
 
 ![](./img/lab1-8dsetoolstatus_v502.png)
