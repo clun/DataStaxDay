@@ -1,0 +1,1 @@
+cassandra-stress user profile=/root/casstress-sales.yaml ops\(insert=3,read1=1\) no-warmup cl=QUORUM -node 172.31.22.179

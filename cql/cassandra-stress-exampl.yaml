@@ -1,0 +1,44 @@
+### DML ### THIS IS UNDER CONSTRUCTION!!!
+
+# Keyspace Name
+keyspace: retailer
+
+# The CQL for creating a keyspace (optional if it already exists)
+#keyspace_definition: |
+#  CREATE KEYSPACE if not exists retailer WITH replication = { 'class': 'NetworkTopologyStrategy', 'DC1': 3};
+
+# Table name
+table: sales
+
+table_definition:
+
+  CREATE TABLE retailer.sales (
+      name text,
+      dt   date,
+      item text,
+      qty   int,
+      price double,
+      rev   double,
+      PRIMARY KEY (name, dt)
+  ) WITH CLUSTERING ORDER BY ( dt DESC );
+
+
+  columnspec:
+  - name: name
+    size: uniform(10..30)
+  - name: dt
+    cluster: uniform(20...40)
+  - name: item
+    size: uniform(1..32)
+  - name: qty
+    size: uniform(1..2)
+  - name: price
+    size: uniform(3..5)
+  - name: rev
+    cluster: uniform(3...5)
+
+
+    queries:
+  read1:
+    cql: select * from sales where name = ? and dt >= ?
+    fields: samerow     # samerow or multirow (select arguments from the same row, or randomly from all rows in the partition)

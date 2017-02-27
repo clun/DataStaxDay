@@ -1,0 +1,60 @@
+# Keyspace Name
+keyspace: retailer
+
+# The CQL for creating a keyspace (optional if it already exists)
+keyspace_definition: |
+  CREATE KEYSPACE retailer WITH replication = {'class': 'NetworkTopologyStrategy', 'DC1': 3};
+
+# Table name
+table: sales
+
+# The CQL for creating a table you wish to stress (optional if it already exists)
+table_definition:
+  create table sales (
+    name text,
+    dt   date,
+    item text,
+    qty   int,
+    price double,
+    rev   double,
+    PRIMARY KEY (name, dt)
+  ) WITH CLUSTERING ORDER BY ( dt DESC )
+### Column Distribution Specifications ###
+
+columnspec:
+- name: name
+  size: uniform(10..30)
+- name: dt
+  cluster: uniform(20...40)
+- name: item
+  size: uniform(1..32)
+- name: qty
+  size: uniform(1..2)
+- name: price
+  size: uniform(3..5)
+- name: rev
+  cluster: uniform(3...5)
+
+### Batch Ratio Distribution Specifications ###
+
+insert:
+  partitions: fixed(1)            # Our partition key is the domain so only insert one per batch
+
+  select:  fixed(1)/1000        # We have 1000 posts per domain so 1/1000 will allow 1 post per batch
+
+  batchtype: UNLOGGED             # Unlogged batches
+
+
+#
+# A list of queries you wish to run against the schema
+#
+queries:
+   read1:
+    cql: SELECT * FROM sales WHERE name = ?
+    fields: samerow
+   read1:
+    cql: SELECT * FROM sales WHERE name = ? AND dt = ?
+    fields: samerow
+   read1:
+    cql: SELECT * FROM sales WHERE name = ? AND dt >= ? AND dt <= ?
+    fields: samerow
