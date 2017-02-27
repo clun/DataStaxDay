@@ -22,7 +22,7 @@ Let's make our first Cassandra Keyspace! If you are using uppercase letters, use
 
 ```
 
-create keyspace if not exists retailer with replication = { 'class' : 'NetworkTopologyStrategy', 'DC1' : 3 };
+CREATE KEYSPACE <Enter your firstname/name> WITH replication = {'class': 'NetworkTopologyStrategy', 'DC1': 3 };
 
 ```
 
@@ -31,9 +31,9 @@ create keyspace if not exists retailer with replication = { 'class' : 'NetworkTo
 And just like that, any data within any table you create under your keyspace will automatically be replicated 3 times. Let's keep going and create ourselves a table. You can follow my example or be a rebel and roll your own.
 
 ```
-use retailer;
+use <yourkeyspace>;
 
-CREATE TABLE retailer.sales (
+CREATE TABLE <yourkeyspace>.sales (
     name text,
     dt   date,
     item text,
@@ -51,11 +51,11 @@ Yup. This table is very simple but don't worry, we'll play with some more intere
 Let's get some data into your table! Cut and paste these inserts into DevCenter or CQLSH. Feel free to insert your own data values, as well.
 
 ```
-INSERT INTO retailer.sales (name, dt, item, qty, price, rev) VALUES ('gregg', '2017-02-11', 'Microsoft Xbox', 1, 299.00, 299.00);
-INSERT INTO retailer.sales (name, dt, item, qty, price, rev) VALUES ('schnack', '2017-02-12','Microsoft Surface', 1, 1999.00,1999.00);
-INSERT INTO retailer.sales (name, dt, item, qty, price, rev) VALUES ('gregg', '2017-02-13', 'iMac', 1, 1499.00,1499.00);
-INSERT INTO retailer.sales (name, dt, item, qty, price, rev) VALUES ('gregg', '2017-10-04', 'PlayStation 4', 1, 399.00,399.00);
-INSERT INTO retailer.sales (name, dt, item, qty, price, rev) VALUES ('schnack', '2017-02-15', 'AppleWatch', 1, 799.00,799.00);
+INSERT INTO <yourkeyspace>.sales (name, dt, item, qty, price, rev) VALUES ('gregg', '2017-02-11', 'Microsoft Xbox', 1, 299.00, 299.00);
+INSERT INTO <yourkeyspace>.sales (name, dt, item, qty, price, rev) VALUES ('schnack', '2017-02-12','Microsoft Surface', 1, 1999.00,1999.00);
+INSERT INTO <yourkeyspace>.sales (name, dt, item, qty, price, rev) VALUES ('gregg', '2017-02-13', 'iMac', 1, 1499.00,1499.00);
+INSERT INTO <yourkeyspace>.sales (name, dt, item, qty, price, rev) VALUES ('gregg', '2017-10-04', 'PlayStation 4', 1, 399.00,399.00);
+INSERT INTO <yourkeyspace>.sales (name, dt, item, qty, price, rev) VALUES ('schnack', '2017-02-15', 'AppleWatch', 1, 799.00,799.00);
 ```
 
 ![](./img/lab2-3cqlinsert.png)
@@ -64,7 +64,7 @@ Now, to retrieve data from the database run:
 
 ```  
 
-SELECT * FROM retailer.sales WHERE name='gregg' AND dt >='2017-01-01';
+SELECT * FROM <yourkeyspace>.sales WHERE name='gregg' AND dt >='2017-01-01';
 
 ```
 
@@ -79,10 +79,11 @@ Cassandra stress is a tool which can be used to verify the scalability and laten
 We've prepared a cassandra-stress profile to customize the workload as we would expect it in the system.
 
 On node0 you'll find the casstress-sales.yaml profile for our example.
+You have to copy it and add your keyspace to it.
 
 ```
 # Keyspace Name
-keyspace: retailer
+keyspace: <yourkeyspace>
 
 # The CQL for creating a keyspace (optional if it already exists)
 keyspace_definition: |
@@ -148,6 +149,8 @@ Now you can start monitoring your cluster via OpsCenter: http://54.194.43.170:88
 
 ![](./img/lab2-6opscenter.png)
 
+For further assistance and to create a more complex stress yaml file please consult the following page:   
+**[Cassandra Stress Data Modeler](http://www.sestevez.com/sestevez/CassandraDataModeler/)**
 
 ## Extra Credit
 
