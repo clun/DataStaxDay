@@ -1,3 +1,5 @@
+  **[Back to Agenda](./../README.md)**
+
 # Lab 1 - Accessing the Cluster
 
 Open a web browser to your OpsCenter node.
@@ -81,3 +83,5 @@ Great!  You've now logged into the administrative tool, OpsCenter, on your clust
 ## Optional Exercise
 
 OpsCenter 6 introduced Lifecycle Manager (LCM).  Add the cluster to LCM and then review the settings.  It's possible to enable/disable Spark and Solr in LCM.
+
+  **[Back to Agenda](./../README.md)**

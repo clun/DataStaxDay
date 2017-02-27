@@ -1,3 +1,5 @@
+**[Back to Agenda](./../README.md)**
+
 # Lab 2 - CQL
 
 Use SSH to connect to one of your nodes.  We're now going to start the cqlsh client.
@@ -70,6 +72,85 @@ SELECT * FROM retailer.sales WHERE name='gregg' AND dt >='2017-01-01';
 
 See what I did there? You can do range scans on clustering keys! Give it a try.
 
+
+Let's put some workload on the cluster.
+Cassandra stress is a tool which can be used to verify the scalability and latency performance of a specific keyspace and table.
+
+We've prepared a cassandra-stress profile to customize the workload as we would expect it in the system.
+
+On node0 you'll find the casstress-sales.yaml profile for our example.
+
+```
+# Keyspace Name
+keyspace: retailer
+
+# The CQL for creating a keyspace (optional if it already exists)
+keyspace_definition: |
+  CREATE KEYSPACE retailer WITH replication = {'class': 'NetworkTopologyStrategy', 'DC1': 3};
+
+# Table name
+table: sales
+
+# The CQL for creating a table you wish to stress (optional if it already exists)
+table_definition:
+  create table sales (
+    name text,
+    dt   date,
+    item text,
+    qty   int,
+    price double,
+    rev   double,
+    PRIMARY KEY (name, dt)
+  ) WITH CLUSTERING ORDER BY ( dt DESC )
+### Column Distribution Specifications ###
+
+columnspec:
+- name: name
+  size: uniform(10..30)
+- name: dt
+  cluster: uniform(20...40)
+- name: item
+  size: uniform(1..32)
+- name: qty
+  size: uniform(1..2)
+- name: price
+  size: uniform(3..5)
+- name: rev
+  cluster: uniform(3...5)
+
+#
+# A list of queries you wish to run against the schema
+#
+queries:
+   read1:
+    cql: SELECT * FROM sales WHERE name = ?
+    fields: samerow
+   read1:
+    cql: SELECT * FROM sales WHERE name = ? AND dt = ?
+    fields: samerow
+   read1:
+    cql: SELECT * FROM sales WHERE name = ? AND dt >= ? AND dt <= ?
+    fields: samerow
+```
+
+To start cassandra-stress you can use the following command:  
+**Please note that you have to put your IP address of one of your cluster nodes for the *-node* parameter**
+
+```   
+
+cassandra-stress user profile=/root/casstress-sales.yaml ops\(insert=3,read1=1\) no-warmup cl=QUORUM -node 172.31.22.179
+
+```
+
+![](./img/lab2-5casstress.png)
+
+Now you can start monitoring your cluster via OpsCenter: http://54.194.43.170:8888/opscenter/
+
+![](./img/lab2-6opscenter.png)
+
+
 ## Extra Credit
 
 In addition to the command line cqlsh, DataStax offers a product called DevCenter.  You can download DevCenter, connect to your cluster and run queries using that IDE environment.  DevCenter is available for download at [https://academy.datastax.com/downloads](https://academy.datastax.com/downloads).
+
+**[Back to Agenda](./../README.md)**
