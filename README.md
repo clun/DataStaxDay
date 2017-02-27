@@ -12,7 +12,7 @@ Here's our agenda for today:
 * Introduction
   * Lecture - Architecture
   * [Lab 1 - Accessing the Cluster](./labs/Lab%201%20-%20Accessing%20the%20Cluster.md)
-  * [Lab 2 - Hands-On CQL and workload simulation](./labs/Lab%202%20-%20Hands%20On%20DSE%20CQL.md)
+  * [Lab 2 - DSE CQL and workload simulation](./labs/Lab%202%20-%20DSE%20CQL.md)
 
 
 * Data Modeling
@@ -23,14 +23,9 @@ Here's our agenda for today:
 
 * Search
     * Lecture - Search
-    * [Lab 5 - Search](./labs/Lab%205%20-%20Search.md)  
+    * [Lab 5 - DSE Search](./labs/Lab%205%20-%20Search.md)  
 
 
 * Analytics
     * Lecture - Analytics
-    * [Lab 6 - Analytics](./labs/Lab%206%20-%20Analytics.md)  
-
-
-* Operations [Optional]
-    * Lecture - Operations
-    * [Lab 7 - Operations](./labs/Lab%207%20-%20Operations.md)
+    * [Lab 6 - DSE Analytics](./labs/Lab%206%20-%20Analytics.md)  
