@@ -33,4 +33,4 @@ Here's our agenda for today:
 
 * Operations [Optional]
     * Lecture - Operations
-    * [Lab 7 - Operations](./labs/Lab%208%20-%20Operations.md)
+    * [Lab 7 - Operations](./labs/Lab%207%20-%20Operations.md)
