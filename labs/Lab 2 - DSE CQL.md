@@ -26,7 +26,7 @@ CREATE KEYSPACE <Enter your firstname/name> WITH replication = {'class': 'Networ
 
 ```
 
-![](./img/lab2-1createkeyspace.png )
+![](./img/lab2-2createkeyspace.png )
 
 And just like that, any data within any table you create under your keyspace will automatically be replicated 3 times. Let's keep going and create ourselves a table. You can follow my example or be a rebel and roll your own.
 
