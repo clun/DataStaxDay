@@ -78,8 +78,12 @@ Cassandra stress is a tool which can be used to verify the scalability and laten
 
 We've prepared a cassandra-stress profile to customize the workload as we would expect it in the system.
 
-On node0 you'll find the casstress-sales.yaml profile for our example.
-You have to copy it and add your keyspace to it.
+Login in On one of the nodes of your cluster and copy the casstress-sales.yaml profile. Add your keyspace to it.
+
+```
+vi casstress-sales.yaml
+```
+Copy the content to the file.
 
 ```
 # Keyspace Name
