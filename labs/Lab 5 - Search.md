@@ -177,27 +177,27 @@ use <yourkeyspace>;
 
 **Filter queries**: These are awesome because the result set gets cached in memory.
 ```
-SELECT asin, title, categories, price  FROM retailer.metadata  WHERE solr_query='{"q":"title:Noir~", "fq":"categories:Books", "sort":"title asc", "useFieldCache":true}' limit 10;
+SELECT asin, title, categories, price  FROM metadata  WHERE solr_query='{"q":"title:Noir~", "fq":"categories:Books", "sort":"title asc", "useFieldCache":true}' limit 10;
 ```
 
 **Faceting**: Get counts of fields
 ```
-SELECT asin, title, categories, price  FROM retailer.metadata  WHERE solr_query='{"q":"title:Noir~", "facet":{"field":"categories"} , "useFieldCache":true}' limit 10;
+SELECT asin, title, categories, price  FROM metadata  WHERE solr_query='{"q":"title:Noir~", "facet":{"field":"categories"} , "useFieldCache":true}' limit 10;
 ```
 
 **Geospatial Searches**: Supports box and radius
 ```
-SELECT asin, user, city, country, location, region, postal_code FROM retailer.clicks WHERE solr_query='{"q":"asin:*", "fq":"+{!geofilt pt=\"37.7484,-122.4156\" sfield=location d=3}", "useFieldCache":true}' limit 10;
+SELECT asin, user, city, country, location, region, postal_code FROM clicks WHERE solr_query='{"q":"asin:*", "fq":"+{!geofilt pt=\"37.7484,-122.4156\" sfield=location d=3}", "useFieldCache":true}' limit 10;
 ```
 
 **Joins**: Not your relational joins. These queries 'borrow' indexes from other tables to add filter logic. These are fast!
 ```
-SELECT asin, title, categories, price   FROM retailer.metadata  WHERE solr_query='{"q":"*:*", "fq":"{!join from=asin to=asin force=true fromIndex=retailer.clicks}area_code:415", "useFieldCache":true}' limit 10;
+SELECT asin, title, categories, price   FROM metadata  WHERE solr_query='{"q":"*:*", "fq":"{!join from=asin to=asin force=true fromIndex=retailer.clicks}area_code:415", "useFieldCache":true}' limit 10;
 ```
 
 **Fun all in one**
 ```
-SELECT asin, title, categories, price   FROM retailer.metadata WHERE solr_query='{"q":"*:*", "facet":{"field":"categories"}, "fq":"{!join from=asin to=asin force=true fromIndex=retailer.clicks}area_code:415"}' limit 5;
+SELECT asin, title, categories, price   FROM metadata WHERE solr_query='{"q":"*:*", "facet":{"field":"categories"}, "fq":"{!join from=asin to=asin force=true fromIndex=retailer.clicks}area_code:415"}' limit 5;
 ```
 
 Want to see a really cool example of a live DSE Search app? Check out [KillrVideo](http://www.killrvideo.com/) and its [Git](https://github.com/luketillman/killrvideo-csharp) to see it in action.
