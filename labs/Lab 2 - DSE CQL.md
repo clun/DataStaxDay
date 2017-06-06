@@ -33,15 +33,14 @@ And just like that, any data within any table you create under your keyspace wil
 ```
 use <yourkeyspace>;
 
-CREATE TABLE <yourkeyspace>.sales (
-    name text,
-    dt   date,
-    item text,
-    qty   int,
-    price double,
-    rev   double,
-    PRIMARY KEY (name, dt)
-) WITH CLUSTERING ORDER BY ( dt DESC );
+CREATE TABLE <yourkeyspace>.sales_by_custid (
+    custid   int,
+    salesdt  date,
+    revenue  double,
+    discount double,
+    comment  text,
+    PRIMARY KEY (custid, salesdt)
+) WITH CLUSTERING ORDER BY ( salesdt DESC );
 ```
 
 ![](./img/lab2-2createtable.png)
@@ -51,11 +50,11 @@ Yup. This table is very simple but don't worry, we'll play with some more intere
 Let's get some data into your table! Cut and paste these inserts into DevCenter or CQLSH. Feel free to insert your own data values, as well.
 
 ```
-INSERT INTO <yourkeyspace>.sales (name, dt, item, qty, price, rev) VALUES ('gregg', '2017-02-11', 'Microsoft Xbox', 1, 299.00, 299.00);
-INSERT INTO <yourkeyspace>.sales (name, dt, item, qty, price, rev) VALUES ('schnack', '2017-02-12','Microsoft Surface', 1, 1999.00,1999.00);
-INSERT INTO <yourkeyspace>.sales (name, dt, item, qty, price, rev) VALUES ('gregg', '2017-02-13', 'iMac', 1, 1499.00,1499.00);
-INSERT INTO <yourkeyspace>.sales (name, dt, item, qty, price, rev) VALUES ('gregg', '2017-10-04', 'PlayStation 4', 1, 399.00,399.00);
-INSERT INTO <yourkeyspace>.sales (name, dt, item, qty, price, rev) VALUES ('schnack', '2017-02-15', 'AppleWatch', 1, 799.00,799.00);
+INSERT INTO sales_by_custid (custid, salesdt, revenue, discount, comment) VALUES (1, '2017-02-11', 299.0, 0, 'Microsoft Xbox');
+INSERT INTO sales_by_custid (custid, salesdt, revenue, discount, comment) VALUES (2, '2017-02-12', 1999.0, 20, 'Microsoft Surface');
+INSERT INTO sales_by_custid (custid, salesdt, revenue, discount, comment) VALUES (1, '2017-02-13',  1499.00, 15, 'iMac');
+INSERT INTO sales_by_custid (custid, salesdt, revenue, discount, comment) VALUES (1, '2017-10-04', 399.0, 12.5, 'PlayStation 4');
+INSERT INTO sales_by_custid (custid, salesdt, revenue, discount, comment) VALUES (2, '2017-02-15', 560.0, 15, 'AppleWatch');
 ```
 
 ![](./img/lab2-3cqlinsert.png)
@@ -64,7 +63,7 @@ Now, to retrieve data from the database run:
 
 ```  
 
-SELECT * FROM <yourkeyspace>.sales WHERE name='gregg' AND dt >='2017-01-01';
+select * from sales_by_custid WHERE custid=1 AND salesdt >='2017-01-01';
 
 ```
 
@@ -87,54 +86,52 @@ Copy the content to the file.
 
 ```
 # Keyspace Name
-keyspace: <yourkeyspace>
+keyspace: <your_keyspace>
 
 # The CQL for creating a keyspace (optional if it already exists)
 keyspace_definition: |
-  CREATE KEYSPACE retailer WITH replication = {'class': 'NetworkTopologyStrategy', 'DC1': 3};
+  CREATE KEYSPACE <your_keyspace> WITH replication = {'class': 'NetworkTopologyStrategy', 'DC1': 3};
 
 # Table name
-table: sales
+table: sales_by_custid
 
 # The CQL for creating a table you wish to stress (optional if it already exists)
 table_definition:
-  create table sales (
-    name text,
-    dt   date,
-    item text,
-    qty   int,
-    price double,
-    rev   double,
-    PRIMARY KEY (name, dt)
-  ) WITH CLUSTERING ORDER BY ( dt DESC )
+  create table sales_by_custid (
+  custid   int,
+  salesdt  date,
+  revenue  double,
+  discount double,
+  comment  text,
+  primary key (custid, salesdt)
+  )
+
 ### Column Distribution Specifications ###
 
 columnspec:
-- name: name
+- name: custid
   size: uniform(10..30)
-- name: dt
+- name: salesdt
   cluster: uniform(20...40)
-- name: item
-  size: uniform(1..32)
-- name: qty
-  size: uniform(1..2)
-- name: price
-  size: uniform(3..5)
-- name: rev
+- name: revenue
   cluster: uniform(3...5)
+- name: discount
+  size: uniform(1..2)
+- name: comment
+  size: uniform(10..30)
 
 #
 # A list of queries you wish to run against the schema
 #
 queries:
    read1:
-    cql: SELECT * FROM sales WHERE name = ?
+    cql: SELECT * FROM sales_by_custid WHERE custid = ?
     fields: samerow
    read1:
-    cql: SELECT * FROM sales WHERE name = ? AND dt = ?
+    cql: SELECT * FROM sales_by_custid WHERE custid = ? AND salesdt = ?
     fields: samerow
    read1:
-    cql: SELECT * FROM sales WHERE name = ? AND dt >= ? AND dt <= ?
+    cql: SELECT * FROM sales_by_custid WHERE custid = ? AND salesdt >= ? AND salesdt <= ?
     fields: samerow
 ```
 
@@ -143,13 +140,13 @@ To start cassandra-stress you can use the following command:
 
 ```   
 
-cassandra-stress user profile=/root/casstress-sales.yaml ops\(insert=3,read1=1\) no-warmup cl=QUORUM -node 172.31.22.179
+cassandra-stress user profile=/<path_to_file>/casstress-sales.yaml ops\(insert=3,read1=1\) no-warmup cl=QUORUM -node 172.31.22.179
 
 ```
 
 ![](./img/lab2-5casstress.png)
 
-Now you can start monitoring your cluster via OpsCenter: http://54.194.43.170:8888/opscenter/
+Now you can start monitoring your cluster via OpsCenter: http://<cluster_node1_ip>:8888/opscenter/
 
 ![](./img/lab2-6opscenter.png)
 
