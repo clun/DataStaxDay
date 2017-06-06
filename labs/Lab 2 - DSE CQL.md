@@ -33,7 +33,7 @@ And just like that, any data within any table you create under your keyspace wil
 ```
 use <yourkeyspace>;
 
-CREATE TABLE <yourkeyspace>.sales_by_custid (
+CREATE TABLE sales_by_custid (
     custid   int,
     salesdt  date,
     revenue  double,
@@ -43,7 +43,7 @@ CREATE TABLE <yourkeyspace>.sales_by_custid (
 ) WITH CLUSTERING ORDER BY ( salesdt DESC );
 ```
 
-![](./img/lab2-2createtable.png)
+![](./img/lab2-2createtable.png)**/
 
 Yup. This table is very simple but don't worry, we'll play with some more interesting tables in just a minute.
 
@@ -56,8 +56,6 @@ INSERT INTO sales_by_custid (custid, salesdt, revenue, discount, comment) VALUES
 INSERT INTO sales_by_custid (custid, salesdt, revenue, discount, comment) VALUES (1, '2017-10-04', 399.0, 12.5, 'PlayStation 4');
 INSERT INTO sales_by_custid (custid, salesdt, revenue, discount, comment) VALUES (2, '2017-02-15', 560.0, 15, 'AppleWatch');
 ```
-
-![](./img/lab2-3cqlinsert.png)
 
 Now, to retrieve data from the database run:
 
