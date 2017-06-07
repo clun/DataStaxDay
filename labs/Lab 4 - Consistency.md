@@ -54,14 +54,14 @@ consistency all
 Any query will now be traced. Consistency of all means all 3 replicas need to respond to a given request (read OR write) to be successful. Let's do a SELECT statement in cqlsh to see the effects.
 
 ```
-SELECT * FROM retailer.sales where name='gregg';
+SELECT * FROM retailer.sales_by_customer where custid=1;
 ```
 
 Note that the query fails.  Why did it fail? What exception can you see?  Next we're going to change the consistency level to make our query succeed.  Let's compare a lower consistency level:
 
 ```
 consistency local_quorum
-SELECT * FROM retailer.sales where name='gregg';
+SELECT * FROM retailer.sales_by_customer where custid=1;
 ```
 
 In this case, be sure to take note of the time the query took to complete.  Quorum means majority: RF/2 + 1. In our case, 3/2 = 1 + 1 = 2. At least 2 nodes need to acknowledge the request.
@@ -70,14 +70,14 @@ Let's try the SELECT statement again with consistency level set to local_one:
 
 ```
 consistency local_one
-SELECT * FROM retailer.sales where name='gregg';
+SELECT * FROM retailer.sales_by_customer where custid=1;
 ```
 
 Take a look at the trace output. Look at all queries and contact points. What you're witnessing is both the beauty and challenge of distributed systems.
 
 ```
 consistency local_quorum
-SELECT * FROM retailer.sales where name='gregg';
+SELECT * FROM retailer.sales_by_customer where custid=1;
 ```
 
 This looks much better now doesn't it? LOCAL_QUORUM is the most commonly used consistency level among developers. It provides a good level of performance and a moderate amount of consistency. That being said, many use cases can warrant CL=LOCAL_ONE.

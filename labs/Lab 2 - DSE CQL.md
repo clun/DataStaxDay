@@ -33,7 +33,7 @@ And just like that, any data within any table you create under your keyspace wil
 ```
 use <yourkeyspace>;
 
-CREATE TABLE sales_by_custid (
+CREATE TABLE sales_by_customer (
     custid   int,
     salesdt  date,
     revenue  double,
@@ -50,18 +50,18 @@ Yup. This table is very simple but don't worry, we'll play with some more intere
 Let's get some data into your table! Cut and paste these inserts into DevCenter or CQLSH. Feel free to insert your own data values, as well.
 
 ```
-INSERT INTO sales_by_custid (custid, salesdt, revenue, discount, comment) VALUES (1, '2017-02-11', 299.0, 0, 'Microsoft Xbox');
-INSERT INTO sales_by_custid (custid, salesdt, revenue, discount, comment) VALUES (2, '2017-02-12', 1999.0, 20, 'Microsoft Surface');
-INSERT INTO sales_by_custid (custid, salesdt, revenue, discount, comment) VALUES (1, '2017-02-13',  1499.00, 15, 'iMac');
-INSERT INTO sales_by_custid (custid, salesdt, revenue, discount, comment) VALUES (1, '2017-10-04', 399.0, 12.5, 'PlayStation 4');
-INSERT INTO sales_by_custid (custid, salesdt, revenue, discount, comment) VALUES (2, '2017-02-15', 560.0, 15, 'AppleWatch');
+INSERT INTO sales_by_customer (custid, salesdt, revenue, discount, comment) VALUES (1, '2017-02-11', 299.0, 0, 'Microsoft Xbox');
+INSERT INTO sales_by_customer (custid, salesdt, revenue, discount, comment) VALUES (2, '2017-02-12', 1999.0, 20, 'Microsoft Surface');
+INSERT INTO sales_by_customer (custid, salesdt, revenue, discount, comment) VALUES (1, '2017-02-13',  1499.00, 15, 'iMac');
+INSERT INTO sales_by_customer (custid, salesdt, revenue, discount, comment) VALUES (1, '2017-10-04', 399.0, 12.5, 'PlayStation 4');
+INSERT INTO sales_by_customer (custid, salesdt, revenue, discount, comment) VALUES (2, '2017-02-15', 560.0, 15, 'AppleWatch');
 ```
 
 Now, to retrieve data from the database run:
 
 ```  
 
-select * from sales_by_custid WHERE custid=1 AND salesdt >='2017-01-01';
+select * from sales_by_customer WHERE custid=1 AND salesdt >='2017-01-01';
 
 ```
 
@@ -87,11 +87,11 @@ Copy the content to the file.
 keyspace: <your_keyspace>
 
 # Table name
-table: stress_sales_by_custid
+table: stress_sales_by_customer
 
 # The CQL for creating a table you wish to stress (optional if it already exists)
 table_definition:
-  create table stress_sales_by_custid (
+  create table stress_sales_by_customer (
   custid   int,
   salesdt  date,
   revenue  double,
@@ -119,13 +119,13 @@ columnspec:
 #
 queries:
    read1:
-    cql: SELECT * FROM stress_sales_by_custid WHERE custid = ?
+    cql: SELECT * FROM stress_sales_by_customer WHERE custid = ?
     fields: samerow
    read1:
-    cql: SELECT * FROM stress_sales_by_custid WHERE custid = ? AND salesdt = ?
+    cql: SELECT * FROM stress_sales_by_customer WHERE custid = ? AND salesdt = ?
     fields: samerow
    read1:
-    cql: SELECT * FROM stress_sales_by_custid WHERE custid = ? AND salesdt >= ? AND salesdt <= ?
+    cql: SELECT * FROM stress_sales_by_customer WHERE custid = ? AND salesdt >= ? AND salesdt <= ?
     fields: samerow
 ```
 
