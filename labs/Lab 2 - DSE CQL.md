@@ -86,16 +86,12 @@ Copy the content to the file.
 # Keyspace Name
 keyspace: <your_keyspace>
 
-# The CQL for creating a keyspace (optional if it already exists)
-keyspace_definition: |
-  CREATE KEYSPACE <your_keyspace> WITH replication = {'class': 'NetworkTopologyStrategy', 'DC1': 3};
-
 # Table name
-table: sales_by_custid
+table: stress_sales_by_custid
 
 # The CQL for creating a table you wish to stress (optional if it already exists)
 table_definition:
-  create table sales_by_custid (
+  create table stress_sales_by_custid (
   custid   int,
   salesdt  date,
   revenue  double,
@@ -123,13 +119,13 @@ columnspec:
 #
 queries:
    read1:
-    cql: SELECT * FROM sales_by_custid WHERE custid = ?
+    cql: SELECT * FROM stress_sales_by_custid WHERE custid = ?
     fields: samerow
    read1:
-    cql: SELECT * FROM sales_by_custid WHERE custid = ? AND salesdt = ?
+    cql: SELECT * FROM stress_sales_by_custid WHERE custid = ? AND salesdt = ?
     fields: samerow
    read1:
-    cql: SELECT * FROM sales_by_custid WHERE custid = ? AND salesdt >= ? AND salesdt <= ?
+    cql: SELECT * FROM stress_sales_by_custid WHERE custid = ? AND salesdt >= ? AND salesdt <= ?
     fields: samerow
 ```
 
