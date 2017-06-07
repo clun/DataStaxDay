@@ -34,13 +34,17 @@ And just like that, any data within any table you create under your keyspace wil
 use <yourkeyspace>;
 
 CREATE TABLE sales_by_customer (
-    custid   int,
-    salesdt  date,
-    revenue  double,
+    custid int,
+    salesdt text,
+    comment text,
     discount double,
-    comment  text,
+    longlat text,
+    postalcode text,
+    revenue double,
+    sentiment text,
     PRIMARY KEY (custid, salesdt)
-) WITH CLUSTERING ORDER BY ( salesdt DESC );
+)
+
 ```
 
 ![](./img/lab2-2createtable.png)**/
@@ -92,13 +96,16 @@ table: stress_sales_by_customer
 # The CQL for creating a table you wish to stress (optional if it already exists)
 table_definition:
   create table stress_sales_by_customer (
-  custid   int,
-  salesdt  date,
-  revenue  double,
-  discount double,
-  comment  text,
-  primary key (custid, salesdt)
-  )
+        custid int,
+        salesdt text,
+        comment text,
+        discount double,
+        longlat text,
+        postalcode text,
+        revenue double,
+        sentiment text,
+        PRIMARY KEY (custid, salesdt)
+    )
 
 ### Column Distribution Specifications ###
 
@@ -134,7 +141,7 @@ To start cassandra-stress you can use the following command:
 
 ```   
 
-cassandra-stress user profile=/<path_to_file>/casstress-sales.yaml ops\(insert=3,read1=1\) no-warmup cl=QUORUM -node 172.31.22.179
+cassandra-stress user profile=/<path_to_file>/casstress-sales.yaml ops\(insert=3,read1=1\) no-warmup cl=LOCAL_ONE -node 172.31.22.179
 
 ```
 
