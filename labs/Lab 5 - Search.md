@@ -7,198 +7,116 @@
 
 DSE Search is awesome. You can configure which columns of which Cassandra tables you'd like indexed in Lucene format to make extended searches more efficient while enabling features such as text search and geospatial search.
 
-Let's start off by indexing the tables we've already made. Here's where the dsetool really comes in handy.  From the command line on one of your nodes run:
+First import some more data to the table we've already made. For this please use the COPY command in cqlsh to import a CSV data into the sales_by_customer table.
+
+** You can find the sales_by_customer.csv file under /tmp directory.**
 
 ```
-dsetool create_core retailer.sales generateResources=true reindex=true
+use <your_keyspace>;
+
+COPY sales_by_customer (custid, salesdt, comment, discount, revenue, longlat, postalcode, sentiment) FROM 'sales_by_customer.csv' ;
+
+```
+![](./img/lab5-1-1copydata.png)
+
+
+**Functional queries:**
+
+1. For a given custid, get all orders
+
+2. For a given custid, get all orders in a specific date range
+
+3. For a given custid, get all orders with a 'positve' sentiment
+
+4. For a given custid, get all orders with discount greater then 15.0
+
+5. For a given custid, get all orders with revenue greater then 3000 and a discount less then 30.0
+
+
+Functional query from 1-5
+
+```
+select * from sales_by_customer where custid = 769;
+
+select * from sales_by_customer where custid = 769 and salesdt > '2017-01-01' and salesdt < '2018-01-01'
+
+select * from sales_by_customer where custid = 769 and sentiment='positiv' ALLOW FILTERING;
+
+select * from sales_by_customer where custid = 769 and discount>15 ALLOW FILTERING;
+
+select * from sales_by_customer where custid = 769 and revenue>3000 and discount<30 ALLOW FILTERING;
 ```
 
-![](./img/lab5-1makecore.png)
+Now lets find the answer of the following functional queries.
+
+6. For a given sentiment, get all orders greater then x revenue and greater then x discount
+
+
+Let's start off by indexing the tables we've already made. Here's where DSE Search really comes in handy.  From cqlsh on one of your nodes run:
+
+```
+use retailer;
+
+CREATE SEARCH INDEX IF NOT EXISTS ON sales_by_customer WITH COLUMNS sentiment;
+
+```
+Anyone familiar with Solr knows that there's a REST API for querying data. In DSE Search, we embed that into CQL so you can take advantage of all the goodness CQL brings. Let's give it a shot.
+
+
+
+**Filter Queries**    
+Now lets check the functional query with a solr query again:
+
+
+```
+select custid, revenue, discount, postalcode from sales_by_customer where  solr_query='{"q":"sentiment:positiv"}';
+
+or
+
+select custid, revenue, discount, postalcode from sales_by_customer where  solr_query='{"q":"sentiment:po*"}';
+
+or
+
+select * from sales_by_customer where solr_query='{"q":"custid:769", "fq":"sentiment:posit~"}';
+```    
+
+
+To answer the following functional query we might need to index another column
+
+7. For a given region, get all orders with a revenue greater 2000
+
+Now add the postalcode column to the indexing
+
+```
+ALTER SEARCH INDEX SCHEMA ON sales_by_customer ADD field postalcode;
+RELOAD SEARCH INDEX ON retailer.sales_by_customer;
+REBUILD SEARCH INDEX ON sales_by_customer WITH OPTIONS { deleteAll:false };
+```
+**Range Query**    
+Now lets check the functional query with a solr query again:    
+
+```
+select custid, revenue, discount, postalcode from sales_by_customer where  solr_query='{"q":"postalcode:[8000 TO 9000]"}';
+
+```
+**Facet Search**    
+Lets check how many orders with positive sentiment are in the postalcodes:   
+
+```
+select custid, revenue, discount, postalcode from sales_by_customer where  solr_query='{"q":"sentiment:positiv" ,"facet":{"field":"postalcode"} , "useFieldCache":true}' ;
+
+```
 
 If you've ever created your own Solr cluster, you know you need to create the core and upload a schema and config.xml. That generateResources tag does that for you. For production use, you'll want to take the resources and edit them to your needs but it does save you a few steps.
 
-Now for that description of the dsetool. Use the dsetool utility for creating system keys, encrypting sensitive configuration, and performing Cassandra File System (CFS) and Hadoop-related tasks, such as checking the CFS, and listing node subranges of data in a keyspace.
+Similar to what we've done on cqlsh you can run the dsetool on the command line e.g. dsetool create_core retailer.sales generateResources=true reindex=true
 
-This by default will map Cassandra types to Solr types for you. Anyone familiar with Solr knows that there's a REST API for querying data. In DSE Search, we embed that into CQL so you can take advantage of all the goodness CQL brings. Let's give it a shot.  Inside a cqlsh run the command:
-
-```
-SELECT * FROM retailer.sales WHERE solr_query='{"q":"name:*"}';
-```
-
-![](./img/lab5-2solrselect.png)
-
-```
-SELECT * FROM retailer.sales WHERE solr_query='{"q":"name:gregg", "fq":"item:*icrosof*"}';
-```
-
-![](./img/lab5-3solrselect.png)
-
-For your reference, here's the doc that shows some of things you can do: http://docs.datastax.com/en/latest-dse/datastax_enterprise/srch/queriesCql.html
-
-## Retail Book Workshop
-
-There are some Linux and Cassandra pre-requisites need for this exercise.
-* development tools like gcc compiler, Python libraries
-* Pip Python - package manager
-* DataStax Python Driver
-
-NOTE : All python dependancies are already installed on DataStax Days clusters.
-
-You can check if they're already installed using a package manager e.g. on Ubuntu:
-```
-apt-cache policy gcc python-dev python-pip python-dev build-essential
-```
-If any of the packages are not installed, follow the instructions below. If you're sharing a cluster with other students you should decide between you who will perform these tasks on which nodes!
-
-**Install pip and dependencies**
-
-```
-sudo apt-get install gcc python-dev
-sudo apt-get install python-pip python-dev build-essential
-sudo pip install --upgrade pip
-sudo pip install --upgrade virtualenv
-```
-
-**Install the Python Cassandra Driver**
-
-The next step is to install the DataStax Cassandra Python Driver.
-
-You can check if its already installed using the following command:
-```
-pip show cassandra-driver
----
-Name: cassandra-driver
-Version: 3.4.1
-Location: /usr/local/lib/python2.7/dist-packages
-Requires: six, futures
-```
-If it *isn't* already installed, use the following command to install it:
-
->This might take some time on less powerful machines
-
-```
-
-sudo pip install cassandra-driver
-```
-
-Now we need to load the data and create our Solr cores.
-
-**Run solr_dataloader.py**
-
-```
-
-git clone https://github.com/norim/DataStaxDay
-cd DataStaxDay/data
-
-```
-
-This will create the CQL schemas and load the data. Be sure to pass the name of your keyspace as a parameter:
-
-```
-./create_data.sh <name of your keyspace>
-...
-Loading into Keyspace ...
-loading geo
-loading meta
-Finished!
-```
-
-**Run create_core.sh**
-
-This will generate Solr cores and index the data. Be sure to pass the name of your keyspace as a parameter:
-```
-./create_core.sh <name of your keyspace>
-...
-Creating Solr cores...
-finished creating Solr cores!
-```
+This by default will map Cassandra types to Solr types for you.  I
 
 
-Here's an example page of what's in the database now:   
- https://www.amazon.com/Science-Closer-Look-Grade-6/dp/0022841393?ie=UTF8&keywords=0022841393&qid=1454964627&ref_=sr_1_1&sr=8-1
+![](./img/lab5-1makecore.png)
 
-Now that we've prepared all that, what can we do?  Lots of things it turns out...
-
-## Filter queries
-
-These are awesome because the result set gets cached in memory.
-
-```
-SELECT asin, title, categories, price  FROM retailer.metadata WHERE solr_query='{"q":"title:Noir~", "fq":"categories:Books", "sort":"title asc", "useFieldCache":true}' limit 10;
-```
-
-
-The Amazon data model includes the following tables:
-
-
-Click stream data:
-```
-CREATE TABLE <your keyspace name>.clicks (
-    asin text,
-    seq timeuuid,
-    user uuid,
-    area_code text,
-    city text,
-    country text,
-    ip text,
-    loc_id text,
-    location text,
-    location_0_coordinate double,
-    location_1_coordinate double,
-    metro_code text,
-    postal_code text,
-    region text,
-    solr_query text,
-    PRIMARY KEY (asin, seq, user)
-) WITH CLUSTERING ORDER BY (seq DESC, user ASC);
-```
-And book metadata:
-
-```
-CREATE TABLE <your keyspace name>.metadata (
-    asin text PRIMARY KEY,
-    also_bought set<text>,
-    buy_after_viewing set<text>,
-    categories set<text>,
-    imurl text,
-    price double,
-    solr_query text,
-    title text
-);
-```
-
-So what are things you can do?
-
-First, set our ***default*** keyspace so that we dont need to type it in every time.
-
-```
-use <yourkeyspace>;
-```
-
-**Filter queries**: These are awesome because the result set gets cached in memory.
-```
-SELECT asin, title, categories, price  FROM metadata  WHERE solr_query='{"q":"title:Noir~", "fq":"categories:Books", "sort":"title asc", "useFieldCache":true}' limit 10;
-```
-
-**Faceting**: Get counts of fields
-```
-SELECT asin, title, categories, price  FROM metadata  WHERE solr_query='{"q":"title:Noir~", "facet":{"field":"categories"} , "useFieldCache":true}' limit 10;
-```
-
-**Geospatial Searches**: Supports box and radius
-```
-SELECT asin, user, city, country, location, region, postal_code FROM clicks WHERE solr_query='{"q":"asin:*", "fq":"+{!geofilt pt=\"37.7484,-122.4156\" sfield=location d=3}", "useFieldCache":true}' limit 10;
-```
-
-**Joins**: Not your relational joins. These queries 'borrow' indexes from other tables to add filter logic. These are fast!
-```
-SELECT asin, title, categories, price   FROM metadata  WHERE solr_query='{"q":"*:*", "fq":"{!join from=asin to=asin force=true fromIndex=retailer.clicks}area_code:415", "useFieldCache":true}' limit 10;
-```
-
-**Fun all in one**
-```
-SELECT asin, title, categories, price   FROM metadata WHERE solr_query='{"q":"*:*", "facet":{"field":"categories"}, "fq":"{!join from=asin to=asin force=true fromIndex=retailer.clicks}area_code:415"}' limit 5;
-```
+For your reference, here's the doc that shows some of things you can do: http://docs.datastax.com/en/dse/5.1/dse-admin/datastax_enterprise/search/queriesAbout.html
 
 Want to see a really cool example of a live DSE Search app? Check out [KillrVideo](http://www.killrvideo.com/) and its [Git](https://github.com/luketillman/killrvideo-csharp) to see it in action.
 
