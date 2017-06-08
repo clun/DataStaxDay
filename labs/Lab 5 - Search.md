@@ -9,8 +9,16 @@ DSE Search is awesome. You can configure which columns of which Cassandra tables
 
 First import some more data to the table we've already made. For this please use the COPY command in cqlsh to import a CSV data into the sales_by_customer table.
 
-** You can find the sales_by_customer.csv file under /tmp directory.**
 
+Please start to copy the repository first:
+```
+git clone https://github.com/norim/DataStaxDay
+cd DataStaxDay/data
+```
+
+** You can find the file sales_by_customer.csv und DataStaxDay/data/ **
+
+Start `cqlsh` commandline and follow the instructions.
 ```
 use <your_keyspace>;
 
