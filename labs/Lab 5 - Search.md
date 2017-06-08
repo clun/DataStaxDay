@@ -77,8 +77,10 @@ select custid, revenue, discount, postalcode from sales_by_customer where  solr_
 
 or
 
-select * from sales_by_customer where solr_query='{"q":"custid:769", "fq":"sentiment:posit~"}';
+select custid, revenue, discount, postalcode from sales_by_customer where solr_query='{"q":"custid:769", "fq":"sentiment:posit~"}';
 ```    
+
+![](./img/lab5-1-2filterquery.png)
 
 
 To answer the following functional query we might need to index another column
@@ -99,6 +101,10 @@ Now lets check the functional query with a solr query again:
 select custid, revenue, discount, postalcode from sales_by_customer where  solr_query='{"q":"postalcode:[8000 TO 9000]"}';
 
 ```
+
+![](./img/lab5-1-3range.png)
+
+
 **Facet Search**    
 Lets check how many orders with positive sentiment are in the postalcodes:   
 
@@ -106,6 +112,9 @@ Lets check how many orders with positive sentiment are in the postalcodes:
 select custid, revenue, discount, postalcode from sales_by_customer where  solr_query='{"q":"sentiment:positiv" ,"facet":{"field":"postalcode"} , "useFieldCache":true}' ;
 
 ```
+
+![](./img/lab5-1-4facet.png)
+
 
 If you've ever created your own Solr cluster, you know you need to create the core and upload a schema and config.xml. That generateResources tag does that for you. For production use, you'll want to take the resources and edit them to your needs but it does save you a few steps.
 
