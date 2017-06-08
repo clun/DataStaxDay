@@ -16,7 +16,7 @@ git clone https://github.com/norim/DataStaxDay
 cd DataStaxDay/data
 ```
 
-** You can find the file sales_by_customer.csv und DataStaxDay/data/ **
+** You can find the file sales_by_customer.csv under DataStaxDay/data/ **
 
 Start `cqlsh` commandline and follow the instructions.
 ```
