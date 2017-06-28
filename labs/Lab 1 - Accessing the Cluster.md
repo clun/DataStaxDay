@@ -19,15 +19,15 @@ If you are on a Mac, you already have SSH installed in your terminal.  If you ar
 
 For this cluster, the username is ds_user.  In the terminal I can ssh to the node.
 
-You need to download the key file to your local computer.
-For Linux/Mac user [Key File](./res/rs.pem)
-For Windows user [Key File](./res/rs.ppk)
+You need to download the key file to your local computer.   
+For Linux/Mac user : [Key File](./res/rs.pem)   
+For Windows user : [Key File](./res/rs.ppk)   
 
 For this cluster, the username is **ds_user**.  So, in the terminal I can ssh to the node by running the command:
 
 ```
 
-ssh ds_user@<my_cluster_ip> -i /path/to/keyfile/ws.pem
+ssh ds_user@<my_cluster_ip> -i /path/to/keyfile/rs.pem
 
 ```
 
