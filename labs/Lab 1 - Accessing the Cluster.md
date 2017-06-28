@@ -4,7 +4,7 @@
 
 Open a web browser to your OpsCenter node.
 For this cluster, it's running at **http://opscenter_id_address:8888**.   
-Find your IP address here: [Cluster IP address](./cluster_ip.md).    
+Find your IP address here: [Cluster IP address](./res/cluster_ip.md).    
 
 ![](./img/lab1-1opscenter.png)
 
@@ -19,7 +19,9 @@ If you are on a Mac, you already have SSH installed in your terminal.  If you ar
 
 For this cluster, the username is ds_user.  In the terminal I can ssh to the node.
 
-You need to download the key file to your local computer.[Key File](./res/ws.pem)
+You need to download the key file to your local computer.
+For Linux/Mac user [Key File](./res/rs.pem)
+For Windows user [Key File](./res/rs.ppk)
 
 For this cluster, the username is **ds_user**.  So, in the terminal I can ssh to the node by running the command:
 
