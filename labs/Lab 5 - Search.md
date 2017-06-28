@@ -83,13 +83,17 @@ select salesdt,revenue,discount,postalcode,longlat,sentiment from sales_by_custo
 or **Wildcard**
 
 ```
+
 select salesdt,revenue,discount,postalcode,longlat,sentiment from sales_by_customer where  solr_query='{"q":"sentiment:po*"}';
+
 ```
 
 or **Negation**
 
 ```
+
 select salesdt,revenue,discount,postalcode,longlat,sentiment from sales_by_customer where solr_query='{"q":"custid:769", "fq":"-sentiment:posi*"}';
+
 ```    
 
 ![](./img/lab5-1-2filterquery.png)
@@ -137,6 +141,8 @@ You can update the schema and reload the configuration and schema.
 
 This by default will map Cassandra types to Solr types for you.  I
 
+For Geo Spatial Search you need to update the schema similar to the example in the docs:
+https://docs.datastax.com/en/dse/5.1/dse-admin/datastax_enterprise/search/queriesGeoSpatial.html
 
 ![](./img/lab5-1makecore.png)
 
