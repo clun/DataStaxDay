@@ -10,25 +10,28 @@ Find your IP address here: [Cluster IP address](./cluster_ip.md).
 
 Mouse over the nodes in your ring.  There should be three, with the names node0, node1 and node2.  Click on node0.
 
+
 ![](./img/lab1-3opsdc0vm0ip.png)
 
 We're now going to SSH into each node and modify a configuration file.  You will have to repeat these steps for nodes: node0, node1 and node3. Please refere to the  **[IP list here](./cluster_ip.md).**
 
 If you are on a Mac, you already have SSH installed in your terminal.  If you are on Windows, you may need to install an SSH client.  A popular SSH client is Putty.  Putty can be downloaded from [http://www.putty.org](http://www.putty.org).
 
-For this cluster, the username is root.  So, in the terminal I can ssh to the node by running the command:
+For this cluster, the username is ds_user.  In the terminal I can ssh to the node.
+
+You need to download the key file to your local computer.[Key File](./res/ws.pem)
+
+For this cluster, the username is **ds_user**.  So, in the terminal I can ssh to the node by running the command:
 
 ```
-ssh root@54.186.100.184
+
+ssh ds_user@<my_cluster_ip> -i /path/to/keyfile/ws.pem
+
 ```
 
 You may be prompted to accept the node's key.  If so, type "yes" and hit enter.
 
 ![](./img/lab1-4sshlogin.png)
-
-Enter the password provided in the workshop and hit enter.
-
-![](./img/lab1-5sshlogin2.png)
 
 Great!
 
