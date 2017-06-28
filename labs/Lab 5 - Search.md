@@ -121,8 +121,8 @@ select custid, revenue, discount, postalcode from sales_by_customer where  solr_
 Lets check how many orders with positive sentiment are in the postalcodes:   
 
 ```
-select custid, revenue, discount, postalcode from sales_by_customer where  solr_query='{"q":"sentiment:positiv" ,"facet":{"field":"postalcode"} , "useFieldCache":true}' ;
 
+select custid, revenue, discount, postalcode from sales_by_customer where  solr_query='{"q":"sentiment:positiv" ,"facet":{"field":"postalcode"} , "useFieldCache":true}' ;
 ```
 
 ![](./img/lab5-1-4facet.png)
@@ -130,7 +130,10 @@ select custid, revenue, discount, postalcode from sales_by_customer where  solr_
 
 If you've ever created your own Solr cluster, you know you need to create the core and upload a schema and config.xml. That generateResources tag does that for you. For production use, you'll want to take the resources and edit them to your needs but it does save you a few steps.
 
+
+**As a side note:**   
 Similar to what we've done on cqlsh you can run the dsetool on the command line e.g. dsetool create_core retailer.sales generateResources=true reindex=true
+You can update the schema and reload the configuration and schema.
 
 This by default will map Cassandra types to Solr types for you.  I
 
