@@ -44,15 +44,15 @@ COPY sales_by_customer (custid, salesdt, comment, discount, revenue, longlat, po
 Functional query from 1-5
 
 ```
-select * from sales_by_customer where custid = 769;
+select salesdt,revenue,discount,postalcode,longlat,sentiment from sales_by_customer where custid = 769;
 
-select * from sales_by_customer where custid = 769 and salesdt > '2017-01-01' and salesdt < '2018-01-01'
+select salesdt,revenue,discount,postalcode,longlat,sentiment from sales_by_customer where custid = 769 and salesdt > '2017-01-01' and salesdt < '2018-01-01';
 
-select * from sales_by_customer where custid = 769 and sentiment='positiv' ALLOW FILTERING;
+select salesdt,revenue,discount,postalcode,longlat,sentiment from sales_by_customer where custid = 769 and sentiment='positiv' ALLOW FILTERING;
 
-select * from sales_by_customer where custid = 769 and discount>15 ALLOW FILTERING;
+select salesdt,revenue,discount,postalcode,longlat,sentiment from sales_by_customer where custid = 769 and discount>15 ALLOW FILTERING;
 
-select * from sales_by_customer where custid = 769 and revenue>3000 and discount<30 ALLOW FILTERING;
+select salesdt,revenue,discount,postalcode,longlat,sentiment from sales_by_customer where custid = 769 and revenue>3000 and discount<30 ALLOW FILTERING;
 ```
 
 Now lets find the answer of the following functional queries.
