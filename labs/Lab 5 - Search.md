@@ -77,15 +77,19 @@ Now lets check the functional query with a solr query again:
 
 
 ```
-select custid, revenue, discount, postalcode from sales_by_customer where  solr_query='{"q":"sentiment:positiv"}';
+select salesdt,revenue,discount,postalcode,longlat,sentiment from sales_by_customer where  solr_query='{"q":"sentiment:positiv"}';
+```
 
-or
+or **Wildcard**
 
-select custid, revenue, discount, postalcode from sales_by_customer where  solr_query='{"q":"sentiment:po*"}';
+```
+select salesdt,revenue,discount,postalcode,longlat,sentiment from sales_by_customer where  solr_query='{"q":"sentiment:po*"}';
+```
 
-or
+or **Negation**
 
-select custid, revenue, discount, postalcode from sales_by_customer where solr_query='{"q":"custid:769", "fq":"sentiment:posit~"}';
+```
+select salesdt,revenue,discount,postalcode,longlat,sentiment from sales_by_customer where solr_query='{"q":"custid:769", "fq":"-sentiment:posi*"}';
 ```    
 
 ![](./img/lab5-1-2filterquery.png)
