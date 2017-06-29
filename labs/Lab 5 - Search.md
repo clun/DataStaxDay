@@ -57,7 +57,7 @@ select salesdt,revenue,discount,postalcode,longlat,sentiment from sales_by_custo
 
 Now lets find the answer of the following functional queries.
 
-6. For a given sentiment, get all orders greater then x revenue and greater then x discount
+6. For a given sentiment, get all orders
 
 
 Let's start off by indexing the tables we've already made. Here's where DSE Search really comes in handy.  From cqlsh on one of your nodes run:
