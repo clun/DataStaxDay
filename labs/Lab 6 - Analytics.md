@@ -11,6 +11,15 @@ It's a little tricky to have an entire class run streaming operations on a singl
 
 
 #### **Prereq for this lab**
+
+** You can find the files user_purchase.tar.gz under DataStaxDay/data/ **
+Please unzip with
+
+```
+tar xvfz user_purchase.tar.gz
+
+```
+
 Start `cqlsh` commandline and follow the instructions.
 ```
 use <your_keyspace>;
@@ -47,6 +56,8 @@ CREATE TABLE IF NOT EXISTS user_purchases(
 
 // load data to tables
 COPY users(user_id,date_of_creation,firstname,lastname,age,sex,email,phones,address,city,state,country,company,job)  FROM './user_purchase/users.csv'  WITH HEADER=false AND DELIMITER='|' AND DATETIMEFORMAT='%Y-%m-%dT%H:%M:%S.%fz' AND INGESTRATE=100000;
+
+
 COPY user_purchases(user_id,date,item,price,quantity,total,currency,payment_method) FROM './user_purchase/user_purchase.csv' WITH HEADER=false AND DELIMITER='|' AND DATETIMEFORMAT='%Y-%m-%dT%H:%M:%S.%fz' AND INGESTRATE=60000;
 ```
 
