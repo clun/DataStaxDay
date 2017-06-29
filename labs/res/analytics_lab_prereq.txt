@@ -1,0 +1,58 @@
+CREATE KEYSPACE IF NOT EXISTS retailer WITH replication = {'class': 'SimpleStrategy', 'replication_factor': 1};
+
+CREATE TABLE IF NOT EXISTS users(
+    user_id uuid,
+    date_of_creation timestamp,
+    firstname text,
+    lastname text,
+    age int,
+    sex text,
+    email text,
+    phones map<text,text>,
+    address text,
+    city text,
+    state text,
+    country text,
+    company text,
+    job text,
+    PRIMARY KEY(user_id)
+);
+
+CREATE TABLE IF NOT EXISTS user_purchases(
+    user_id uuid,
+    date timestamp,
+    item text,
+    price double,
+    quantity int,
+    total double,
+    currency text,
+    payment_method text,
+    PRIMARY KEY((user_id),date)
+);
+
+
+// load data to tables
+COPY users(user_id,date_of_creation,firstname,lastname,age,sex,email,phones,address,city,state,country,company,job)  FROM './user_purchase/users.csv'  WITH HEADER=false AND DELIMITER='|' AND DATETIMEFORMAT='%Y-%m-%dT%H:%M:%S.%fz' AND INGESTRATE=100000;
+COPY user_purchases(user_id,date,item,price,quantity,total,currency,payment_method) FROM './user_purchase/user_purchase.csv' WITH HEADER=false AND DELIMITER='|' AND DATETIMEFORMAT='%Y-%m-%dT%H:%M:%S.%fz' AND INGESTRATE=60000;
+
+// statistics of the totals
+spark.sql("select * from retailer.user_purchases").groupBy("user_id").
+  agg(count(($"date")).alias("total_purchases"),
+      avg(($"total")).alias("avg_total"),
+      min(($"total")).alias("min_total"),
+      max(($"total")).alias("max_total")).show
+
+
+spark.table("retailer.user_purchases").filter($"total">1000);
+
+// Give me the
+spark.table("retailer.user_purchases").groupBy("user_id").
+agg(count(($"date")).alias("count"),
+    sum(($"total")).alias("sum_total")).
+orderBy($"sum_total".desc).show(10)
+
+spark.sql("SELECT user_id, count(date) count, sum(total) FROM retailer.user_purchases group by user_id order by sum(total) desc limit 10").show
+
+spark.sql("SELECT user_id, date, sum(total), rank() OVER (PARTITION BY date ORDER BY sum(total) DESC) as rank FROM retailer.user_purchases group by user_id, date").show
+
+spark.sql("SELECT user_id, sum(total), rank() OVER (ORDER BY sum(total) DESC) as rank FROM retailer.user_purchases group by user_id").show
