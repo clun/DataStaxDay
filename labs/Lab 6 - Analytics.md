@@ -69,16 +69,18 @@ COPY user_purchases(user_id,date,item,price,quantity,total,currency,payment_meth
 
 dse spark spark.ui.port=<Pick a random 4 digit number> --total-executor-cores 2 --executor-memory 1G
 
-dse spark-sql --conf spark.ui.port=<Pick a random 4 digit number> --conf spark.cores.max=1```
+```
 
 >Notice the spark.ui.port flag - Because we are on a shared cluster, we need to specify a radom port so we don't clash with other users. We're also setting max cores = 1 or else one job will hog all the resources.
 
 Lets check the table structure from spark:
+
 ```
 
 :show retailer   
 
 ```
+
 ** We want to answer following business questions:**
 1. Give me all users whose total amount for a single purchase is greater than 1000.0 euro
 2. Give me the top buyer (user whose sum of total price of all transactions) for each country (join & group by)
