@@ -122,13 +122,39 @@ spark.table("retailer.user_purchases").alias("purchase").
 ```
 ** Same as before with spark SQL **
 ```
-spark.sql("SELECT u.user_id, firstname, email, total FROM retailer.user_purchases p, retailer.users u WHERE p.user_id == u.user_id AND total > 800").show
+val df = spark.sql("SELECT u.user_id, firstname, email, total FROM retailer.user_purchases p, retailer.users u WHERE p.user_id == u.user_id AND total > 800").show
 ```
 
-#### ** Try to find a solution for the second query **
+
+### ** Now write the data to DSE tables **
+
+Create the table in your keyspace and check
+```
+
+df.createCassandraTable(
+    "retailer",
+    "stats",
+    partitionKeyColumns = Some(Seq("user_id")),
+    clusteringKeyColumns = Some(Seq("email")))
+
+df.printSchmea
+
+:show <your keyspace>
+```
+
+Save the data to DSE table
+
+```
+// write df to dse table
+df.write.
+cassandraFormat("stats", "retailer").
+save()
+```
+
+
+#### ** Try to find a solution for the second query
+and write the data back to DSE **
 >2. Give me the top buyer (user whose sum of total price of all transactions) for each country (join & group by)**
-
-
 
 To exit the REPL type ```:quit```
 
