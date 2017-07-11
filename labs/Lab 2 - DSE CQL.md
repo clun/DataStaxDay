@@ -73,6 +73,21 @@ select * from sales_by_customer WHERE custid=1 AND salesdt >='2017-01-01';
 
 See what I did there? You can do range scans on clustering keys! Give it a try.
 
+Hey you can also use standard aggregate functions.
+
+```  
+select custid, sum(revenue) from sales_by_customer group by custid, salesdt';
+
+```
+
+If you have time checkout the Upsert, the TTL and LWT.
+
+1. What happens if you insert the same rows multiple times?
+2. Insert a new partition with the TTL of 10 seconds.
+3. Insert a duplicate row of the available partitions with IF NOT EXISTS statement. What can you see?
+4. What happens when you insert a NULL value?
+
+
 
 Let's put some workload on the cluster.
 Cassandra stress is a tool which can be used to verify the scalability and latency performance of a specific keyspace and table.
