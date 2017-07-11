@@ -18,6 +18,7 @@ Here's our agenda for today:
 * Data Modeling
   * Lecture - Data Modeling
   * [Lab 3 - Primary Keys](./labs/Lab%203%20-%20Primary%20Keys.md)
+  * [Lab 3 - Privamry Keys Adv](./labs/Lab%203%20-%20Primary%20Keys%20adv.md)
   * [Lab 4 - Consistency](./labs/Lab%204%20-%20Consistency.md)  
 
 
