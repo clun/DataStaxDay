@@ -8,30 +8,33 @@ Find your IP address here: [Cluster IP address](./res/cluster_ip.md).
 
 ![](./img/lab1-1opscenter.png)
 
-Mouse over the nodes in your ring.  There should be three, with the names node0, node1 and node2.  Click on node0.
+Mouse over the nodes in your ring. There should be three, with the names node0, node1 and node2. Click on node0.
 
 
 ![](./img/lab1-3opsdc0vm0ip.png)
 
-We're now going to SSH into each node and modify a configuration file.  You will have to repeat these steps for nodes: node0, node1 and node3. Please refere to the  **[IP list here](./cluster_ip.md).**
+We're now going to SSH into each node and modify a configuration file. You will have to repeat these steps for nodes: node0, node1 and node3. Please refere to the  **[IP list here](./cluster_ip.md).**
 
-If you are on a Mac, you already have SSH installed in your terminal.  If you are on Windows, you may need to install an SSH client.  A popular SSH client is Putty.  Putty can be downloaded from [http://www.putty.org](http://www.putty.org).
+If you are on a Mac, you already have SSH installed in your terminal. If you are on Windows, you may need to install an SSH client. A popular SSH client is Putty. Putty can be downloaded from [http://www.putty.org](http://www.putty.org).
 
-For this cluster, the username is ds_user.  In the terminal I can ssh to the node.
+For this cluster, the username is ds_user. In the terminal I can ssh to the node.
 
 You need to download the key file to your local computer.   
 For Linux/Mac user : [Key File](./res/rs.pem)   
 For Windows user : [Key File](./res/rs.ppk)   
 
-For this cluster, the username is **ds_user**.  So, in the terminal I can ssh to the node by running the command:
+For this cluster, the username is **ds_user**. So, in the terminal I can ssh to the node by running the command:
+
+```
+On Linux/Mac
+ssh ds_user@<my_node_ip> -i /path/to/keyfile/rs.pem
+
+On Windows
+ssh ds_user@<my_node_ip> -i /path/to/keyfile/rs.ppk
 
 ```
 
-ssh ds_user@<my_cluster_ip> -i /path/to/keyfile/rs.pem
-
-```
-
-You may be prompted to accept the node's key.  If so, type "yes" and hit enter.
+You may be prompted to accept the node's key. If so, type "yes" and hit enter.
 
 ![](./img/lab1-4sshlogin.png)
 
@@ -47,18 +50,18 @@ dsetool ring
 
 Each node should say the words "Search" and "Analytics" and the Graph's column has the value "yes". If any of them don't, you may have to SSH back into that node and ensure the new configuration is set.
 
-Note that one of the nodes says "(JT)"  This is your Spark job track.  You can view a webpage with information about Spark jobs by opening a web browser to port 7080 on that node.  For this cluster that is at http://13.75.93.215:7080 .  Note your URL will be different.
+Note that one of the nodes says "(JT)" This is your Spark job track. You can view a webpage with information about Spark jobs by opening a web browser to port 7080 on that node. For this cluster that is at http://my_node_ip:7080. Note your URL will be different.
 
 ![](./img/lab1-9sparkjt_v502.png)
 
-We also enabled Solr on our nodes.  You can actually view the Solr UI on any node.  However, for our exercises we're going to use node0.  Open a web browser to port 8983 /solr/ on node0.  For this cluster that is at http://13.75.93.215:8983/solr .  The URL will be different for your cluster.
+We also enabled Solr on our nodes. You can actually view the Solr UI on any node. However, for our exercises we're going to use node0.  Open a web browser to port 8983 /solr/ on node0. For this cluster that is at http://my_node0_ip:8983/solr. The URL will be different for your cluster.
 
 ![](./img/lab1-10solrui_v502.png)
 
-Great!  You've now logged into the administrative tool, OpsCenter, on your cluster.  You've also used SSH to connect to each database node in your cluster and used that to turn Spark and Solr on.  Finally you've logged into the administrative interfaces for both Spark and Solr.  Next up we're going to start putting data in the database!
+Great! You've now logged into the administrative tool, OpsCenter, on your cluster. You've also used SSH to connect to each database node in your cluster. Finally you've logged into the administrative interfaces for both Spark and Solr. Next up we're going to start putting data in the database!
 
 ## Optional Exercise
 
-OpsCenter 6 introduced Lifecycle Manager (LCM).  Add the cluster to LCM and then review the settings.  It's possible to enable/disable Spark and Solr in LCM.
+OpsCenter 6 introduced Lifecycle Manager (LCM). Add the cluster to LCM and then review the settings. It's possible to enable/disable Spark and Solr in LCM.
 
   **[Back to Agenda](./../README.md)**
