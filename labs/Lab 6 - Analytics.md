@@ -90,7 +90,7 @@ Try some unfamiliar CQL commands on that retailer data - common statitics like m
 
 ** scala DataFrame example **
 ```
-spark.table("retailer.user_purchases").
+spark.table("<your keyspace name>.user_purchases").
   groupBy("user_id").
   agg(count(($"date")).alias("count"),
       avg(($"total")).alias("avg"),
@@ -102,27 +102,27 @@ spark.table("retailer.user_purchases").
 ** spark SQL example **
 ```
 
-spark.sql("SELECT user_id, count(total) count, min(total), max(total), avg(total), sum(total) FROM retailer.user_purchases GROUP BY user_id ORDER BY sum(total) desc").show
+spark.sql("SELECT user_id, count(total) count, min(total), max(total), avg(total), sum(total) FROM <your keyspace name>.user_purchases GROUP BY user_id ORDER BY sum(total) desc").show
 
 ```
 
 >  ** 1. Give me all users whose total amount for a single purchase is greater than 1000.0 euro **
 
 ```
-spark.table("retailer.user_purchases").filter($"total">1000);
+spark.table("<your keyspace name>.user_purchases").filter($"total">1000);
 
 ```
 ** Joining the user table in order to get the details of the user **
 ```
-spark.table("retailer.user_purchases").alias("purchase").
+spark.table("<your keyspace name>.user_purchases").alias("purchase").
     filter($"total">800).join(
-        spark.table("retailer.users").alias("users"), col("users.user_id") === col("purchase.user_id"), "inner").
+        spark.table("<your keyspace name>.users").alias("users"), col("users.user_id") === col("purchase.user_id"), "inner").
     select($"users.user_id", $"firstname", $"email", $"total").show
 
 ```
 ** Same as before with spark SQL **
 ```
-val df = spark.sql("SELECT u.user_id, firstname, email, total FROM retailer.user_purchases p, retailer.users u WHERE p.user_id == u.user_id AND total > 800").show
+val df = spark.sql("SELECT u.user_id, firstname, email, total FROM <your keyspace name>.user_purchases p, retailer.users u WHERE p.user_id == u.user_id AND total > 800").show
 ```
 
 
@@ -132,14 +132,14 @@ Create the table in your keyspace and check
 ```
 
 df.createCassandraTable(
-    "retailer",
+    "<your keyspace name>",
     "stats",
     partitionKeyColumns = Some(Seq("user_id")),
     clusteringKeyColumns = Some(Seq("email")))
 
 df.printSchmea
 
-:show <your keyspace>
+:show <your keyspace name>
 ```
 
 Save the data to DSE table
@@ -147,7 +147,7 @@ Save the data to DSE table
 ```
 // write df to dse table
 df.write.
-cassandraFormat("stats", "retailer").
+cassandraFormat("stats", "<your keyspace name>").
 save()
 ```
 
