@@ -26,4 +26,4 @@ Solr UI port: < node0 >:8983/solr
 
 
 
-**[Back to Agenda](./DataStaxDay/README.md)**
+**[Back to Agenda](/DataStaxDay/README.md)**
