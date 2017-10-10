@@ -77,7 +77,7 @@ Lets check the table structure from spark:
 
 ```
 
-:show retailer   
+:show <your_keyspace>   
 
 ```
 
