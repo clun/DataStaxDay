@@ -63,7 +63,7 @@ Now lets find the answer of the following functional queries.
 Let's start off by indexing the tables we've already made. Here's where DSE Search really comes in handy.  From cqlsh on one of your nodes run:
 
 ```
-use retailer;
+use <your_keyspace>;
 
 CREATE SEARCH INDEX IF NOT EXISTS ON sales_by_customer WITH COLUMNS sentiment;
 
@@ -84,7 +84,7 @@ or **Wildcard**
 
 ```
 
-select salesdt,revenue,discount,postalcode,longlat,sentiment from sales_by_customer where  solr_query='{"q":"sentiment:po*"}';
+select salesdt,revenue,discount,postalcode,longlat,sentiment from sales_by_customer where solr_query='{"q":"sentiment:po*"}';
 
 ```
 
@@ -107,14 +107,14 @@ Now add the postalcode column to the indexing
 
 ```
 ALTER SEARCH INDEX SCHEMA ON sales_by_customer ADD field postalcode;
-RELOAD SEARCH INDEX ON retailer.sales_by_customer;
+RELOAD SEARCH INDEX ON sales_by_customer;
 REBUILD SEARCH INDEX ON sales_by_customer WITH OPTIONS { deleteAll:false };
 ```
 **Range Query**    
 Now lets check the functional query with a solr query again:    
 
 ```
-select custid, revenue, discount, postalcode from sales_by_customer where  solr_query='{"q":"postalcode:[8000 TO 9000]"}';
+select custid, revenue, discount, postalcode from sales_by_customer where solr_query='{"q":"postalcode:[8000 TO 9000]"}';
 
 ```
 
