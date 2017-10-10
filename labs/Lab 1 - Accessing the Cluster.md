@@ -13,7 +13,7 @@ Mouse over the nodes in your ring. There should be three, with the names node0, 
 
 ![](./img/lab1-3opsdc0vm0ip.png)
 
-We're now going to SSH into each node and modify a configuration file. You will have to repeat these steps for nodes: node0, node1 and node3. Please refere to the  **[IP list here](./cluster_ip.md).**
+We're now going to SSH into each node and modify a configuration file. You will have to repeat these steps for nodes: node0, node1 and node3. Please refer to the  **[IP list here](./res/cluster_ip.md).**
 
 If you are on a Mac, you already have SSH installed in your terminal. If you are on Windows, you may need to install an SSH client. A popular SSH client is Putty. Putty can be downloaded from [http://www.putty.org](http://www.putty.org).
 
