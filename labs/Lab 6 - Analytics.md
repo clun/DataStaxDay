@@ -122,7 +122,7 @@ spark.table("<your keyspace name>.user_purchases").alias("purchase").
 ```
 ** Same as before with spark SQL **
 ```
-val df = spark.sql("SELECT u.user_id, firstname, email, total FROM <your keyspace name>.user_purchases p, retailer.users u WHERE p.user_id == u.user_id AND total > 800")
+val df = spark.sql("SELECT u.user_id, firstname, email, total FROM <your keyspace name>.user_purchases p, <your keyspace name>.users u WHERE p.user_id == u.user_id AND total > 800")
 ```
 
 
