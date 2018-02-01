@@ -69,8 +69,7 @@ Now, to retrieve data from the database run:
 ```
 select * from transactions WHERE account_number='1' AND transaction_time >='2018-01-01';
 
-select sum(amount) from transactions where account_number = '1234123412341240' and transaction_time >= '2017-09-01' and transaction_time <= '2017-09-04';
-
+select sum(amount) from transactions where account_number = '1' and transaction_time >= '2017-09-01' and transaction_time < '2018-02-01';
 ```
 
 ![](./img/lab2-4select.png)
