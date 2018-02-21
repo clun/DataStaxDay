@@ -13,10 +13,10 @@ First import some more data to the table we've already made. For this please use
 Please start to copy the repository first:
 ```
 git clone https://github.com/norim/DataStaxDay
-cd DataStaxDay/data
+cd DataStaxDay/labs/res
 ```
 
-** You can find the file sales_by_customer.csv under DataStaxDay/data/ **
+** You can find the file transactions.csv under DataStaxDay/data/ **
 
 Start `cqlsh` commandline and follow the instructions.
 ```
