@@ -105,26 +105,31 @@ Copy the content to the file.
 
 ```
 # Keyspace Name
-keyspace: < your_keyspace >
+
+keyspace: <your keyspace name>
+
+keyspace_definition:
+
+  CREATE KEYSPACE IF NOT EXISTS <your keyspace name> WITH replication = { 'class':'NetworkTopologyStrategy', 'DC1':3};
+
 
 # Table name
 table: stress_transaction_by_txtime
 
 # The CQL for creating a table you wish to stress (optional if it already exists)
 table_definition:
-
   CREATE TABLE if not exists stress_transaction_by_txtime (
-      account_number text,
-      transaction_time timestamp,
-      amount double,
-      location text,
-      merchant text,
-      notes text,
-      status text,
-      tags set<text>,
-      transaction_id text,
-      user_id text,
-      PRIMARY KEY (account_number, transaction_time)
+    account_number text,
+    transaction_time timestamp,
+    amount double,
+    location text,
+    merchant text,
+    notes text,
+    status text,
+    tags set<text>,
+    transaction_id text,
+    user_id text,
+    PRIMARY KEY (account_number, transaction_time)
   ) WITH CLUSTERING ORDER BY (transaction_time DESC);
 
 ### Column Distribution Specifications ###
@@ -142,6 +147,11 @@ columnspec:
   size: uniform(10..30)
 - name: status
   size: uniform(10..30)
+
+insert:
+  partitions: fixed(1) # 1 partition per batch
+  batchtype: UNLOGGED # use unlogged batches
+  select: fixed(10)/10 # no chance of skipping a row when generating inserts
 
 #
 # A list of queries you wish to run against the schema
